@@ -15,7 +15,7 @@ Ensure that your system is running a Debian-based Linux distribution (e.g., Ubun
 ## Installation
 1. Clone this repository or download the script.
    ```bash
-   git clone https://github.com/0xdkcvd/java-installer
+   git clone https://github.com/0xdkcvd/java-installer.git
    ```
 3. Navigate to the script location (optional):
    ```bash
