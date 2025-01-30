@@ -49,4 +49,4 @@ java -version
 This script is provided under the MIT License.
 
 ## Author
-Developed by [https://](https://github.com/0xdkcvd)
+Developed by [0xdkcvd](https://github.com/0xdkcvd)
