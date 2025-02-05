@@ -4,7 +4,7 @@
 arch=$(uname -m)
 getPwd=${PWD}
 
-if [ $arch == "x86_64" ]; then
+if [ "$arch" == "x86_64" ]; then
   arch=x64
 fi
 
@@ -20,8 +20,38 @@ javaList=(
 
 jdkList=("jdk-23.0.2" "jdk-24")
 
+# Function to check if Java is installed
+function check_java_installed() {
+  if command -v java &> /dev/null; then
+    java -version | grep -oP 'java version "\K[^"]+' | head -n 1
+  else
+    echo "Java tidak terdeteksi di sistem Anda"
+  fi
+}
+
+# Function to uninstall Java
+function uninstall_java() {
+  if command -v java &> /dev/null; then
+    sudo apt-get purge -y openjdk*
+    sudo apt-get autoremove -y
+    sudo rm -rf /usr/lib/jvm/*
+    sudo rm -rf /usr/local/java
+    echo "Java telah dihapus dari sistem Anda"
+  else
+    echo "Java tidak terinstal di sistem Anda"
+  fi
+}
+
 # Function to install the latest JDK
 function install_java() {
+  echo "Versi Java yang terinstal saat ini: "
+  check_java_installed
+  
+  read -p "Apakah Anda ingin menghapus versi Java yang ada? (y/n): " uninstallOpt
+  if [[ "$uninstallOpt" == "y" ]]; then
+    uninstall_java
+  fi
+
   echo "List Supported Java Version: "
   echo "1. Java JDK 23"
   echo "2. Java JDK 24"
@@ -41,16 +71,12 @@ function install_java() {
     jdkVer=${jdkList[1]}
   fi
 
-  # Remove existing Java installations
-  sudo apt-get purge -y openjdk* && sudo apt-get autoremove -y
-  sudo rm -rf /usr/lib/jvm/*
-
   # Download and install the selected Java version
   echo "Downloading Java ${jdkVer}..."
   wget -O javalts.tar.gz ${javaVer}
 
   # Create directory and extract the tarball
-  sudo mkdir /usr/local/java
+  sudo mkdir -p /usr/local/java
   sudo mv javalts.tar.gz /usr/local/java
   cd /usr/local/java
   sudo tar zxvf javalts.tar.gz
