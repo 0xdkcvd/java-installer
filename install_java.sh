@@ -14,11 +14,15 @@ command -v tar >/dev/null 2>&1 || { echo >&2 "Tar is not found on this machine, 
 
 # Java versions list
 javaList=(
+  "https://download.oracle.com/java/19/latest/jdk-19_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/20/latest/jdk-20_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/21/latest/jdk-21_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/22/latest/jdk-22_linux-${arch}_bin.tar.gz"
   "https://download.oracle.com/java/23/latest/jdk-23_linux-${arch}_bin.tar.gz"
   "https://download.java.net/java/early_access/jdk24/27/GPL/openjdk-24-ea+27_linux-${arch}_bin.tar.gz"
 )
 
-jdkList=("jdk-23.0.2" "jdk-24")
+jdkList=("jdk-19" "jdk-20" "jdk-21" "jdk-22" "jdk-23" "jdk-24")
 
 # Function to check if Java is installed
 function check_java_installed() {
@@ -53,23 +57,19 @@ function install_java() {
   fi
 
   echo "List Supported Java Version: "
-  echo "1. Java JDK 23"
-  echo "2. Java JDK 24"
-
-  read -p "Choose Java version (1 or 2): " cJava
-
-  until [[ "$cJava" == "1" || "$cJava" == "2" ]]; do
-    echo "Invalid option. Please select 1 or 2."
-    read -p "Choose Java version (1 or 2): " cJava
+  for ((i=0; i<${#jdkList[@]}; i++)); do
+    echo "$((i+1)). Java JDK ${jdkList[i]}"
   done
 
-  if [[ "$cJava" == "1" ]]; then
-    javaVer=${javaList[0]}
-    jdkVer=${jdkList[0]}
-  elif [[ "$cJava" == "2" ]]; then
-    javaVer=${javaList[1]}
-    jdkVer=${jdkList[1]}
-  fi
+  read -p "Choose Java version (1 to ${#jdkList[@]}): " cJava
+
+  until [[ "$cJava" =~ ^[0-9]+$ ]] && [ "$cJava" -ge 1 ] && [ "$cJava" -le ${#jdkList[@]} ]; do
+    echo "Invalid option. Please select a number between 1 and ${#jdkList[@]}."
+    read -p "Choose Java version (1 to ${#jdkList[@]}): " cJava
+  done
+
+  javaVer=${javaList[cJava-1]}
+  jdkVer=${jdkList[cJava-1]}
 
   # Download and install the selected Java version
   echo "Downloading Java ${jdkVer}..."
