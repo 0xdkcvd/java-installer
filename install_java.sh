@@ -14,11 +14,11 @@ command -v tar >/dev/null 2>&1 || { echo >&2 "Tar is not found on this machine, 
 
 # Java versions list
 javaList=(
-  "https://download.oracle.com/java/19/latest/jdk-19_linux-${arch}_bin.tar.gz"
-  "https://download.oracle.com/java/20/latest/jdk-20_linux-${arch}_bin.tar.gz"
-  "https://download.oracle.com/java/21/latest/jdk-21_linux-${arch}_bin.tar.gz"
-  "https://download.oracle.com/java/22/latest/jdk-22_linux-${arch}_bin.tar.gz"
-  "https://download.oracle.com/java/23/latest/jdk-23_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/19/archive/jdk-19_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/20/archive/jdk-20_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/21/archive/jdk-21_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/22/archive/jdk-22_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/23/archive/jdk-23_linux-${arch}_bin.tar.gz"
   "https://download.java.net/java/early_access/jdk24/27/GPL/openjdk-24-ea+27_linux-${arch}_bin.tar.gz"
 )
 
