@@ -14,7 +14,7 @@ command -v tar >/dev/null 2>&1 || { echo >&2 "Tar is not found on this machine, 
 
 # Java versions list updated to include from Java 17
 javaList=(
-  "https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/17/archive/jdk-17.0.12_linux-${arch}_bin.tar.gz"
   "https://download.oracle.com/java/18/archive/jdk-18.0.2.1_linux-${arch}_bin.tar.gz"
   "https://download.oracle.com/java/19/archive/jdk-19_linux-${arch}_bin.tar.gz"
   "https://download.oracle.com/java/20/archive/jdk-20_linux-${arch}_bin.tar.gz"
@@ -82,14 +82,23 @@ function install_java() {
   sudo mv javalts.tar.gz /usr/local/java
   cd /usr/local/java
   sudo tar zxvf javalts.tar.gz
+
+  # Determine the actual directory name after extraction
+  extractedDir=$(sudo tar -tzf javalts.tar.gz | head -1 | cut -f1 -d"/")
+  echo "Extracted directory: $extractedDir"
   sudo rm -rf javalts.tar.gz
 
   # Set alternatives for Java
-  sudo update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/${jdkVer}/bin/java" 1
+  echo "Setting Java alternative with path: /usr/local/java/$extractedDir/bin/java"
+  sudo update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/$extractedDir/bin/java" 1
 
   # Verify installation
-  java -version
-  echo "Java ${jdkVer} has been installed successfully!"
+  if command -v java &> /dev/null; then
+      java -version
+      echo "Java $extractedDir has been installed successfully!"
+  else
+      echo "Failed to set Java as an alternative. Please check the installation path."
+  fi
 }
 
 # Run the installation
