@@ -12,8 +12,10 @@ fi
 command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing wget ... "; sudo apt install -y wget;}
 command -v tar >/dev/null 2>&1 || { echo >&2 "Tar is not found on this machine, Installing tar ... "; sudo apt install -y tar;}
 
-# Java versions list
+# Java versions list updated to include from Java 17
 javaList=(
+  "https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-${arch}_bin.tar.gz"
+  "https://download.oracle.com/java/18/archive/jdk-18.0.2.1_linux-${arch}_bin.tar.gz"
   "https://download.oracle.com/java/19/archive/jdk-19_linux-${arch}_bin.tar.gz"
   "https://download.oracle.com/java/20/archive/jdk-20_linux-${arch}_bin.tar.gz"
   "https://download.oracle.com/java/21/archive/jdk-21_linux-${arch}_bin.tar.gz"
@@ -22,7 +24,7 @@ javaList=(
   "https://download.java.net/java/early_access/jdk24/27/GPL/openjdk-24-ea+27_linux-${arch}_bin.tar.gz"
 )
 
-jdkList=("jdk-19" "jdk-20" "jdk-21" "jdk-22" "jdk-23" "jdk-24")
+jdkList=("jdk-17" "jdk-18" "jdk-19" "jdk-20" "jdk-21" "jdk-22" "jdk-23" "jdk-24")
 
 # Function to check if Java is installed
 function check_java_installed() {
